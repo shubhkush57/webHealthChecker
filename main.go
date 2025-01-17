@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -19,6 +20,21 @@ func main() {
 	}
 	for i := 0;i<len(links);i++{
 		fmt.Println(i,<-c)
+	}
+	// checking infite time with some delays..
+	for {
+		// it pause the main routine for 2 seconds only
+		// not good to put sleep int he main .
+		// time.Sleep(time.Second * 2)
+		// go checkLink(<-c,c) // this is also a blocking function....
+		// we also need to pause this for the seconds..
+
+		// adding the function literals
+		go func(){
+			time.Sleep(2*time.Second)
+			checkLink(<-c,c)
+		}()
+
 	}
 	// blocking channel first one get's and executes and exits
 	// still main routine is waiting for some other data to come.
@@ -57,4 +73,6 @@ Channles is to communicate btw different go routines. only way to do this.
 Channle is a type 
 
 recieve a message thorught the channel is a blocking thing.
+
+Function literals aare the anonymous function..
 */
